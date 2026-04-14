@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sriram — Full Stack Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0d;
+    --bg2: #141414;
+    --bg3: #1a1a1a;
+    --text: #f0ede6;
+    --muted: #888580;
+    --accent-green: #b6ff6e;
+    --accent-orange: #ff5c00;
+    --accent-yellow: #ffe34e;
+    --accent-blue: #4af0ff;
+    --border: rgba(255,255,255,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: var(--accent-green); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--accent-green);
+    color: var(--accent-green);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent-green); color: #000; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 3rem;
+    padding-top: 5rem;
+    gap: 3rem;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-left { padding: 4rem 0; }
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-green);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background: var(--accent-green);
+  }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    margin-bottom: 2rem;
+  }
+  h1 .line-muted { color: var(--muted); }
+  h1 .line-accent { color: var(--accent-orange); }
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 440px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    background: var(--accent-green);
+    color: #000;
+    text-decoration: none;
+    font-weight: 700;
+    transition: transform 0.15s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); }
+  .btn-secondary {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    border: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--muted); }
+
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 4rem 0;
+  }
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .stat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 1.5rem 1.25rem;
+  }
+  .stat-card.green { background: var(--accent-green); }
+  .stat-card.orange { background: var(--accent-orange); }
+  .stat-card.yellow { background: var(--accent-yellow); }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: 0.35rem;
+    color: var(--text);
+  }
+  .stat-card.green .stat-num,
+  .stat-card.yellow .stat-num { color: #000; }
+  .stat-card.orange .stat-num { color: #fff; }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .stat-card.green .stat-label,
+  .stat-card.yellow .stat-label { color: rgba(0,0,0,0.6); }
+  .stat-card.orange .stat-label { color: rgba(255,255,255,0.7); }
+
+  .hero-tech-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .tech-pill {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+    padding: 0.4rem 0.85rem;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .tech-pill:hover { border-color: var(--accent-green); color: var(--accent-green); }
+
+  /* SECTIONS */
+  section { padding: 6rem 3rem; border-bottom: 1px solid var(--border); }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+  .section-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2.5rem;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .project-card {
+    background: var(--bg);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.25s;
+  }
+  .project-card:hover { background: var(--bg2); }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--accent-green);
+    transition: height 0.3s;
+  }
+  .project-card:hover::before { height: 100%; }
+  .project-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+  }
+  .project-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+  .project-desc {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .project-metric {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .metric-item { }
+  .metric-val {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent-green);
+  }
+  .metric-lbl {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* EXPERIENCE */
+  .experience-list { display: flex; flex-direction: column; gap: 0; }
+  .exp-item {
+    display: grid;
+    grid-template-columns: 200px 1fr auto;
+    gap: 2rem;
+    align-items: start;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .exp-item:last-child { border-bottom: none; }
+  .exp-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+    padding-top: 0.2rem;
+  }
+  .exp-role {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.25rem;
+  }
+  .exp-company {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent-orange);
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+  .exp-bullets { list-style: none; }
+  .exp-bullets li {
+    font-size: 0.875rem;
+    color: var(--muted);
+    padding: 0.3rem 0;
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.6;
+  }
+  .exp-bullets li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border);
+    font-size: 0.7rem;
+  }
+  .exp-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid var(--accent-green);
+    color: var(--accent-green);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    height: fit-content;
+    white-space: nowrap;
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+  .skill-cat {
+    background: var(--bg);
+    padding: 2rem;
+  }
+  .skill-cat-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .skill-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .skill-list li {
+    font-size: 0.875rem;
+    color: var(--text);
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .skill-list li::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* EDUCATION & CERTS */
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+  .edu-item {
+    background: var(--bg);
+    padding: 2.5rem;
+  }
+  .edu-degree {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.4rem;
+  }
+  .edu-school {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent-blue);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+  }
+  .edu-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+  }
+  .edu-score {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2.5rem;
+    color: var(--accent-green);
+    line-height: 1;
+  }
+  .edu-score-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+  }
+  .certs-list { display: flex; flex-direction: column; gap: 0.75rem; padding-top: 2.5rem; padding-left: 2.5rem; padding-right: 2.5rem; padding-bottom: 2.5rem; }
+  .cert-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    background: var(--bg2);
+    border-left: 2px solid var(--accent-yellow);
+  }
+  .cert-name {
+    font-size: 0.875rem;
+    font-weight: 400;
+  }
+  .cert-org {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-top: 0.2rem;
+  }
+  .cert-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-align: right;
+    flex-shrink: 0;
+    margin-left: 1rem;
+  }
+
+  /* CONTACT */
+  .contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .contact-headline {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    margin-bottom: 1.5rem;
+  }
+  .contact-headline .accent { color: var(--accent-orange); }
+  .contact-sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 380px;
+  }
+  .contact-links { display: flex; flex-direction: column; gap: 0.75rem; }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-link::after {
+    content: '↗';
+    position: absolute;
+    right: 1.5rem;
+    font-size: 1rem;
+    color: var(--muted);
+    transition: transform 0.2s;
+  }
+  .contact-link:hover { border-color: var(--accent-green); }
+  .contact-link:hover::after { transform: translate(3px, -3px); color: var(--accent-green); }
+  .contact-link-icon {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    width: 72px;
+  }
+  .contact-link-val {
+    font-size: 0.875rem;
+    font-weight: 400;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-txt {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-left > * {
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .hero-tag { animation-delay: 0.1s; }
+  h1 { animation-delay: 0.25s; }
+  .hero-desc { animation-delay: 0.4s; }
+  .hero-btns { animation-delay: 0.55s; }
+  .hero-right { opacity: 0; animation: fadeUp 0.7s 0.4s ease forwards; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--bg3); }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 1.5rem; min-height: auto; padding-top: 5rem; }
+    section { padding: 4rem 1.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .edu-grid { grid-template-columns: 1fr; }
+    .contact-wrapper { grid-template-columns: 1fr; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SRIRAM<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:tsriram807@gmail.com" class="nav-cta">Hire Me</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:5rem; border-bottom:1px solid var(--border); display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center;">
+  <div class="hero-left">
+    <div class="hero-tag">Available for Opportunities</div>
+    <h1>
+      FULL<br>
+      <span class="line-muted">STACK</span><br>
+      <span class="line-accent">DEV.</span>
+    </h1>
+    <p class="hero-desc">
+      B.Tech CSE student at Andhra University with 8.9 CGPA. I architect scalable MERN applications — from employee systems to productivity platforms — deployed and serving real users.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-secondary">Let's Talk</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="stat-row">
+      <div class="stat-card green">
+        <div class="stat-num">+6</div>
+        <div class="stat-label">Projects Built</div>
+      </div>
+      <div class="stat-card orange">
+        <div class="stat-num">+1</div>
+        <div class="stat-label">Industry Internship</div>
+      </div>
+      <div class="stat-card yellow">
+        <div class="stat-num">8.9</div>
+        <div class="stat-label">CGPA / 10.0</div>
+      </div>
+    </div>
+    <div class="stat-card" style="background:var(--bg2);">
+      <div style="font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;">MERN Stack · 160+ DSA Problems · GATE 2026 Prep</div>
+      <div class="hero-tech-strip">
+        <span class="tech-pill">React.js</span>
+        <span class="tech-pill">Node.js</span>
+        <span class="tech-pill">MongoDB</span>
+        <span class="tech-pill">Express</span>
+        <span class="tech-pill">JavaScript</span>
+        <span class="tech-pill">Python</span>
+        <span class="tech-pill">Tailwind</span>
+        <span class="tech-pill">JWT</span>
+        <span class="tech-pill">REST API</span>
+        <span class="tech-pill">AWS</span>
+        <span class="tech-pill">Git</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">RECENT PROJECTS</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="projects-grid">
+    <!-- E-Commerce -->
+    <div class="project-card">
+      <div class="project-num">PROJECT / 01</div>
+      <div class="project-name">E-Commerce Platform</div>
+      <p class="project-desc">Full-stack marketplace with 100+ products, cart management, and role-based authorization. 20+ RESTful API endpoints, deployed on Render with 99.5% availability.</p>
+      <div class="project-tags">
+        <span class="tag">React</span>
+        <span class="tag">Node.js</span>
+        <span class="tag">MongoDB</span>
+        <span class="tag">JWT</span>
+        <span class="tag">REST API</span>
+        <span class="tag">Render</span>
+      </div>
+      <div class="project-metric">
+        <div class="metric-item">
+          <div class="metric-val">1000+</div>
+          <div class="metric-lbl">Monthly Users</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val">30%</div>
+          <div class="metric-lbl">Faster Response</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val">99.5%</div>
+          <div class="metric-lbl">Uptime</div>
+        </div>
+      </div>
+    </div>
+    <!-- WorkSphere -->
+    <div class="project-card">
+      <div class="project-num">PROJECT / 02</div>
+      <div class="project-name">WorkSphere</div>
+      <p class="project-desc">All-in-one productivity MERN dashboard unifying 5 modules — tasks, expenses, attendance, events, and workouts — with glassmorphism UI and real-time Chart.js analytics.</p>
+      <div class="project-tags">
+        <span class="tag">React</span>
+        <span class="tag">Node.js</span>
+        <span class="tag">MongoDB</span>
+        <span class="tag">Tailwind</span>
+        <span class="tag">Chart.js</span>
+        <span class="tag">JWT</span>
+      </div>
+      <div class="project-metric">
+        <div class="metric-item">
+          <div class="metric-val">500+</div>
+          <div class="metric-lbl">Concurrent Users</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val">5</div>
+          <div class="metric-lbl">Unified Modules</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val">99.9%</div>
+          <div class="metric-lbl">Uptime</div>
+        </div>
+      </div>
+    </div>
+    <!-- Hospital -->
+    <div class="project-card">
+      <div class="project-num">PROJECT / 03</div>
+      <div class="project-name">Hospital Appointment System</div>
+      <p class="project-desc">Booking interface managing 200+ daily appointments with patient registration, client-side validation, and 15+ reusable React components for rapid development.</p>
+      <div class="project-tags">
+        <span class="tag">React</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">State Management</span>
+        <span class="tag">Local Storage</span>
+      </div>
+      <div class="project-metric">
+        <div class="metric-item">
+          <div class="metric-val">200+</div>
+          <div class="metric-lbl">Daily Appts</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val">70%</div>
+          <div class="metric-lbl">Fewer Errors</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val">15+</div>
+          <div class="metric-lbl">Components</div>
+        </div>
+      </div>
+    </div>
+    <!-- RINL System -->
+    <div class="project-card" style="background:var(--bg2);">
+      <div class="project-num" style="color:var(--accent-orange);">INDUSTRY / 04</div>
+      <div class="project-name">Employee Verification System</div>
+      <p class="project-desc">Built during RINL Steel Plant internship. Handles 500+ employees with secure document upload, automated ID card generation — reducing processing time by 40%.</p>
+      <div class="project-tags">
+        <span class="tag">Full Stack</span>
+        <span class="tag">MERN</span>
+        <span class="tag">Document Upload</span>
+        <span class="tag">Automation</span>
+      </div>
+      <div class="project-metric">
+        <div class="metric-item">
+          <div class="metric-val">500+</div>
+          <div class="metric-lbl">Employees</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val">40%</div>
+          <div class="metric-lbl">Time Saved</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val">60%</div>
+          <div class="metric-lbl">Fewer Errors</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">INDUSTRY EXPERIENCE</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="experience-list">
+    <div class="exp-item">
+      <div class="exp-date">Sep 2025 –<br>Present</div>
+      <div>
+        <div class="exp-role">Co-Lead, Web Development</div>
+        <div class="exp-company">Google Developer Groups (GDGOC) — Andhra University</div>
+        <ul class="exp-bullets">
+          <li>Spearheaded technical MERN stack workshops reaching 200+ students</li>
+          <li>Orchestrated 3+ hackathons and coding competitions with 50+ participants each</li>
+          <li>Elevated student engagement by 35% through project-based learning initiatives</li>
+        </ul>
+      </div>
+      <div class="exp-badge">Current</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-date">May 2025 –<br>Jun 2025</div>
+      <div>
+        <div class="exp-role">Full Stack Developer Intern</div>
+        <div class="exp-company">RINL Steel Plant — Visakhapatnam</div>
+        <ul class="exp-bullets">
+          <li>Engineered employee verification system for 500+ employees with secure document upload</li>
+          <li>Automated ID card generation workflow, reducing processing time by 40%</li>
+          <li>Implemented responsive UI achieving 99.9% uptime and reducing manual errors by 60%</li>
+        </ul>
+      </div>
+      <div class="exp-badge" style="border-color:var(--muted);color:var(--muted);">Completed</div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">TECH STACK</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-cat">
+      <div class="skill-cat-name">Frontend</div>
+      <ul class="skill-list">
+        <li>React.js</li>
+        <li>JavaScript ES6+</li>
+        <li>HTML5 / CSS3</li>
+        <li>Tailwind CSS</li>
+        <li>Responsive Design</li>
+        <li>Chart.js</li>
+      </ul>
+    </div>
+    <div class="skill-cat">
+      <div class="skill-cat-name">Backend</div>
+      <ul class="skill-list">
+        <li>Node.js</li>
+        <li>Express.js</li>
+        <li>RESTful APIs</li>
+        <li>JWT Authentication</li>
+        <li>MVC Architecture</li>
+      </ul>
+    </div>
+    <div class="skill-cat">
+      <div class="skill-cat-name">Database & Tools</div>
+      <ul class="skill-list">
+        <li>MongoDB</li>
+        <li>MySQL</li>
+        <li>Mongoose ODM</li>
+        <li>Git / GitHub</li>
+        <li>Postman</li>
+        <li>AWS / Render</li>
+      </ul>
+    </div>
+    <div class="skill-cat">
+      <div class="skill-cat-name">CS Fundamentals</div>
+      <ul class="skill-list">
+        <li>Data Structures & Algorithms</li>
+        <li>Object-Oriented Programming</li>
+        <li>OS / DBMS</li>
+        <li>Python / Java / C++</li>
+        <li>Agile / Scrum</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">EDUCATION</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="edu-grid">
+    <div class="edu-item">
+      <div class="edu-degree">B.Tech — Computer Science & Engineering</div>
+      <div class="edu-school">Andhra University, Visakhapatnam</div>
+      <div class="edu-year">2023 – 2027</div>
+      <div class="edu-score">8.9</div>
+      <div class="edu-score-label">CGPA / 10.0 &nbsp;·&nbsp; Top 15%</div>
+    </div>
+    <div class="edu-item" style="border-left:1px solid var(--border);">
+      <div class="edu-degree">Intermediate (10+2) — Science</div>
+      <div class="edu-school">Narayana Junior College, Visakhapatnam</div>
+      <div class="edu-year">2021 – 2023</div>
+      <div class="edu-score">96%</div>
+      <div class="edu-score-label">School Topper</div>
+    </div>
+  </div>
+  <div style="margin-top:1px; background:var(--border);">
+    <div class="certs-list" style="background:var(--bg);">
+      <div style="font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;">Certifications</div>
+      <div class="cert-item">
+        <div>
+          <div class="cert-name">JavaScript Algorithms and Data Structures</div>
+          <div class="cert-org">freeCodeCamp</div>
+        </div>
+        <div class="cert-date">Jan 2025</div>
+      </div>
+      <div class="cert-item">
+        <div>
+          <div class="cert-name">Database Foundations</div>
+          <div class="cert-org">Oracle Academy</div>
+        </div>
+        <div class="cert-date">Feb 2025</div>
+      </div>
+      <div class="cert-item">
+        <div>
+          <div class="cert-name">Java Data Structures</div>
+          <div class="cert-org">Scaler</div>
+        </div>
+        <div class="cert-date">Nov 2024</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">LET'S WORK TOGETHER</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-wrapper">
+    <div>
+      <h3 class="contact-headline">
+        HAVE A<br>
+        PROJECT<br>
+        IN <span class="accent">MIND?</span>
+      </h3>
+      <p class="contact-sub">I'm actively looking for internships, full-time roles, and freelance projects. Let's build something great together.</p>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:tsriram807@gmail.com" class="contact-link">
+        <span class="contact-link-icon">Email</span>
+        <span class="contact-link-val">tsriram807@gmail.com</span>
+      </a>
+      <a href="tel:+919948662622" class="contact-link">
+        <span class="contact-link-icon">Phone</span>
+        <span class="contact-link-val">+91-9948662622</span>
+      </a>
+      <a href="https://linkedin.com/in/sri-ram7" target="_blank" class="contact-link">
+        <span class="contact-link-icon">LinkedIn</span>
+        <span class="contact-link-val">linkedin.com/in/sri-ram7</span>
+      </a>
+      <a href="https://github.com/sri-ram7" target="_blank" class="contact-link">
+        <span class="contact-link-icon">GitHub</span>
+        <span class="contact-link-val">github.com/sri-ram7</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-txt">© 2025 Tammannagari Sriram — Visakhapatnam, India</span>
+  <span class="footer-txt">Full Stack MERN Developer</span>
+</footer>
+
+</body>
+</html>
